@@ -8,17 +8,18 @@ https://www.gutenberg.org/files/11/11.txt
 
 Примеры генерации текста:
 
-1) Very politely: 'Did you can--' 'Swim after thinking 
-a soldier on growing, and, just as herself, the way 
-I have to begin.' For, you derive from a poor Alice, in.
+1) Lory, with the King sharply. "Do cats if you did, old 
+fellow! Don't let me help of swimming away in hand, it saw 
+one, or a wretched height to a.
 
-2) The soldiers shouted Alice. 'Why, Mary Ann, and then 
-silence, and she had peeped over me see--how IS a candle'. 
-I know! The King was going up into the arch.
+2) She walked up and any minute, trying to the executioner 
+myself, said "What a large she knows it was snorting like 
+the muscular strength, which was all quarrel so Alice".
 
-3) And then she spoke, but tea. 'I kept from the Project 
-Gutenberg-tm electronic works provided you to do,' Alice 
-kept shifting from one of Mercia and rightly too, that it.
+3) The court. All the beginning to herself, you have lived 
+on which you indicate that he dipped it saw that, as you to 
+herself "Now we needn't be interpreted to".
+
 
 Пример команды для запуска программы в режиме подсчета:
 python3 main.py calculate --input_file <path_1> 
