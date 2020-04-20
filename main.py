@@ -11,15 +11,21 @@ def is_last_sign(a):
     else:
         return False
 
+
 parser = argparse.ArgumentParser()
-#positional
+# positional
 parser.add_argument('mode', type=str, help='calculate or generate')
-#optional required=True
-parser.add_argument('-i', '--input_file', type=str, help='file to calculate from', default='AliceInWonderland.txt')
-parser.add_argument('-p', '--probabilities_file', type=str, help='file to write to', default='probabilities.txt')
-parser.add_argument('-d', '--depth', type=int, help='depth of calculation', default=3)
-parser.add_argument('-c', '--count', type=int, help='number of words to generate', default=30)
-parser.add_argument('-o', '--output_file', type=str, help='file to generate to', default='')
+# optional required=True
+parser.add_argument('-i', '--input_file', type=str,
+                    help='file to calculate from', default='AliceInWonderland.txt')
+parser.add_argument('-p', '--probabilities_file', type=str,
+                    help='file to write to', default='probabilities.txt')
+parser.add_argument('-d', '--depth', type=int,
+                    help='depth of calculation', default=3)
+parser.add_argument('-c', '--count', type=int,
+                    help='number of words to generate', default=30)
+parser.add_argument('-o', '--output_file', type=str,
+                    help='file to generate to', default='')
 args = parser.parse_args()
 
 if args.mode == "calculate":
@@ -65,7 +71,8 @@ elif args.mode == 'generate':
         rand = random.random()
         sum_of_prob = float()
 
-        while length > 0 and not (tuple(combination) in data[length + 1].keys()):
+        while length > 0 and not (tuple(combination) in
+                                  data[length + 1].keys()):
             combination = combination[1:]
             length -= 1
 
@@ -74,30 +81,46 @@ elif args.mode == 'generate':
             if sum_of_prob > rand:
                 combination.append(word)
 
-                if word[0] == '(':
-                    word = word[1:]
-                if word[-1] == ')':
-                    word = word[:-1]
+                word = word.replace("--", "")
+                word = word.replace("(", "")
+                word = word.replace(")", "")
+                word = word.replace("'", '"')
+                if 'n"t' in word:
+                    word = word.replace('n"t', "n't")
+                if '"s' in word:
+                    word = word.replace('"s', "'s")
+                    word = word.replace('"S', "'S")
+                if '"ve' in word:
+                    word = word.replace('"ve', "'ve")
+                if '"ll' in word:
+                    word = word.replace('"ll', "'ll")
 
-                if word[0] == "'" or word[0] == '"':
+                if word[0] == '"':
                     if has_quote:
                         word = word[1:]
                     has_quote = True
-                if word[-1] == "'" or word[-1] == '"':
+                if word[-1] == '"':
                     if not has_quote:
                         word = word[:-1]
                     has_quote = False
                 if is_last_sign(word[-1]) and has_quote:
-                    word = word[:-1] + "'" + word[-1]
+                    word = word[:-1] + '"' + word[-1]
                     has_quote = False
+                if len(word) > 1 and is_last_sign(word[-1]):
+                    if not has_quote and word[-2] == '"':
+                        word = word.replace('"', "")
 
                 if len(result) == 0 or is_last_sign(result[-1][-1]):
                     index = 0
-                    while index < len(word[index]) - 1 and word[index] in string.punctuation:
+                    while index < len(word) - 1 and word[index] \
+                            in string.punctuation:
                         index += 1
                     else:
-                        word = word[:index] + word[index].capitalize() + word[index + 1:]
+                        word = word[:index] + word[index].capitalize() \
+                               + word[index + 1:]
 
+                if len(word) > 1 and word[-2] == '.' and word[-1] == '"':
+                    word = word[:-2] + '".'
                 result.append(word)
                 length += 1
                 break
@@ -107,14 +130,15 @@ elif args.mode == 'generate':
             length -= 1
 
     index = -1
-    while index > -len(result[-1]) and result[-1][index] in string.punctuation:
+    while index > -len(result[-1]) and result[-1][index] \
+            in string.punctuation:
         index -= 1
     else:
         if index != -1:
             result[-1] = result[-1][:index + 1]
 
     if has_quote:
-        result[-1] = result[-1] + "'"
+        result[-1] = result[-1] + '"'
     result[-1] = result[-1] + '.'
 
     if args.output_file == '':
@@ -124,4 +148,3 @@ elif args.mode == 'generate':
         with open(args.output_file, 'w') as output:
             for word in result:
                 print(word, end=' ', file=output)
-
