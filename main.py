@@ -148,3 +148,4 @@ elif args.mode == 'generate':
         with open(args.output_file, 'w') as output:
             for word in result:
                 print(word, end=' ', file=output)
+
