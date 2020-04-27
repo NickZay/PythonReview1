@@ -2,23 +2,26 @@
 
 Я выбрал тему "Генерация текста".
 
-Ссылка на выбранный мною текст:
+Ссылка на выбранныЕ мною текстЫ:
+https://royallib.com/book/London_Jack/White_Fang.html
 https://www.gutenberg.org/files/11/11.txt
-Это "Alice in Wonderland".
+Это "London Jack - White Fang" и "Alice in Wonderland".
 
 Примеры генерации текста:
 
-1) Lory, with the King sharply. "Do cats if you did, old 
-fellow! Don't let me help of swimming away in hand, it saw 
-one, or a wretched height to a.
+1) Work and a tidy little creature when she had been, it 
+uneasily, shaking among the copyright notice this time. 
+“I don’t think, Alice as hard as it to comply with.”
 
-2) She walked up and any minute, trying to the executioner 
-myself, said "What a large she knows it was snorting like 
-the muscular strength, which was all quarrel so Alice".
+2) A timid and finish your Majesty, he said Alice. “That’s 
+nothing but it to whisper a shrill, passionate voice.” 
+“Now, I should like the individual work can reach it: there.”
 
-3) The court. All the beginning to herself, you have lived 
-on which you indicate that he dipped it saw that, as you to 
-herself "Now we needn't be interpreted to".
+
+3) The sands are accepted in their simple rules in a 
+complaining tone, going to guard him; and very much under 
+the end. “If you take this pool?” I meant, the.
+
 
 
 Пример команды для запуска программы в режиме подсчета:

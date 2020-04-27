@@ -5,11 +5,86 @@ import string
 from sys import stdout, stderr
 
 
-def is_last_sign(a):
-    if a == "." or a == "!" or a == "?":
-        return True
-    else:
-        return False
+class MakeSentenceGreatAgain:
+    def __init__(self, number_of_words):
+        self.has_quote = False
+        self.counter = 0
+        self.num_of_words = number_of_words
+        self.is_start_sentence = True
+        self.what_quote = 0
+
+    def __call__(self, arg):
+        self.counter += 1
+        arg = arg.replace("--", "–")
+        arg = arg.replace("(", "")
+        arg = arg.replace(")", "")
+        arg = arg.replace("[", "")
+        arg = arg.replace("]", "")
+        arg = arg.replace("{", "")
+        arg = arg.replace("}", "")
+        arg = arg.replace("_", "")
+
+        beg_quotes = ('“', '"', '«', '‘')
+        end_quotes = ('”', '"', '»', '’')
+        signs = ('.', '?', '!')
+
+        if arg in string.punctuation:
+            if self.counter == self.num_of_words:
+                return '.'
+            return None
+
+        if arg[0] in beg_quotes:
+            if self.has_quote:
+                arg = arg[1:]
+            else:
+                self.what_quote = beg_quotes.index(arg[0])
+            self.has_quote = True
+        elif len(arg) > 1 and (arg[1] in beg_quotes):
+            if self.has_quote:
+                arg = arg[2:]
+            else:
+                self.what_quote = beg_quotes.index(arg[1])
+            self.has_quote = True
+        if arg[-1] in end_quotes:
+            arg = arg[:-1]
+
+        if arg[-1] in end_quotes:
+            if not self.has_quote:
+                arg = arg[:-1]
+            if self.counter != self.num_of_words:
+                self.has_quote = False
+        elif len(arg) > 1 and arg[-2] in end_quotes:
+            if not arg.endswith("’s") and not arg.endswith("’t"):
+                if not self.has_quote:
+                    arg = arg[:-2] + arg[-1]
+                if self.counter != self.num_of_words:
+                    self.has_quote = False
+
+        if self.is_start_sentence:
+            k = 0
+            while k < len(arg) - 1 and arg[k] not in string.ascii_letters:
+                k += 1
+            else:
+                arg = arg[:k] + arg[k].capitalize() + arg[k + 1:]
+            self.is_start_sentence = False
+        if arg[-1] in signs or (len(arg) > 1 and arg[-2] in signs):
+            if self.has_quote and arg[-1] not in end_quotes:
+                arg += end_quotes[self.what_quote]
+                if self.counter != self.num_of_words:
+                    self.has_quote = False
+            self.is_start_sentence = True
+
+        if self.counter == self.num_of_words:
+            k = -1
+            while k > -len(arg) and arg[k] not in string.ascii_letters:
+                k -= 1
+            else:
+                if k != -1:
+                    arg = arg[:k + 1]
+            arg += '.'
+            if self.has_quote:
+                arg += end_quotes[self.what_quote]
+        return arg
 
 
 parser = argparse.ArgumentParser()
@@ -17,7 +92,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('mode', type=str, help='calculate or generate')
 # optional required=True
 parser.add_argument('-i', '--input_file', type=str,
-                    help='file to calculate from', default='AliceInWonderland.txt')
+                    help='file to calculate from', default='LondonJack.WhiteFang.txt')
 parser.add_argument('-p', '--probabilities_file', type=str,
                     help='file to write to', default='probabilities.txt')
 parser.add_argument('-d', '--depth', type=int,
@@ -30,9 +105,14 @@ args = parser.parse_args()
 
 if args.mode == "calculate":
     words = []
-    with open(args.input_file, 'r') as book:
-        for line in book:
-            words += line.split()
+    try:
+        with open(args.input_file, 'r', encoding='utf-8') as book:
+            for line in book:
+                words += line.split()
+    except Exception:
+        with open(args.input_file, 'r') as book:
+            for line in book:
+                words += line.split()
 
     probabilities = [args.depth]
 
@@ -66,7 +146,7 @@ elif args.mode == 'generate':
     combination = []
     length = 0
     result = []
-    has_quote = False
+    fighter_for_justice = MakeSentenceGreatAgain(args.count)
     for j in range(args.count):
         rand = random.random()
         sum_of_prob = float()
@@ -80,47 +160,7 @@ elif args.mode == 'generate':
             sum_of_prob += value
             if sum_of_prob > rand:
                 combination.append(word)
-
-                word = word.replace("--", "")
-                word = word.replace("(", "")
-                word = word.replace(")", "")
-                word = word.replace("'", '"')
-                if 'n"t' in word:
-                    word = word.replace('n"t', "n't")
-                if '"s' in word:
-                    word = word.replace('"s', "'s")
-                    word = word.replace('"S', "'S")
-                if '"ve' in word:
-                    word = word.replace('"ve', "'ve")
-                if '"ll' in word:
-                    word = word.replace('"ll', "'ll")
-
-                if word[0] == '"':
-                    if has_quote:
-                        word = word[1:]
-                    has_quote = True
-                if word[-1] == '"':
-                    if not has_quote:
-                        word = word[:-1]
-                    has_quote = False
-                if is_last_sign(word[-1]) and has_quote:
-                    word = word[:-1] + '"' + word[-1]
-                    has_quote = False
-                if len(word) > 1 and is_last_sign(word[-1]):
-                    if not has_quote and word[-2] == '"':
-                        word = word.replace('"', "")
-
-                if len(result) == 0 or is_last_sign(result[-1][-1]):
-                    index = 0
-                    while index < len(word) - 1 and word[index] \
-                            in string.punctuation:
-                        index += 1
-                    else:
-                        word = word[:index] + word[index].capitalize() \
-                               + word[index + 1:]
-
-                if len(word) > 1 and word[-2] == '.' and word[-1] == '"':
-                    word = word[:-2] + '".'
+                word = fighter_for_justice(word)
                 result.append(word)
                 length += 1
                 break
@@ -129,23 +169,13 @@ elif args.mode == 'generate':
             combination = combination[1:]
             length -= 1
 
-    index = -1
-    while index > -len(result[-1]) and result[-1][index] \
-            in string.punctuation:
-        index -= 1
-    else:
-        if index != -1:
-            result[-1] = result[-1][:index + 1]
-
-    if has_quote:
-        result[-1] = result[-1] + '"'
-    result[-1] = result[-1] + '.'
-
     if args.output_file == '':
         for word in result:
-            print(word, end=' ')
+            if word:
+                print(word, end=' ')
     else:
         with open(args.output_file, 'w') as output:
             for word in result:
-                print(word, end=' ', file=output)
+                if word:
+                    print(word, end=' ', file=output)
 
