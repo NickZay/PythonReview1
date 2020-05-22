@@ -3,7 +3,7 @@
 Я выбрал тему "Генерация текста".
 
 Ссылка на выбранный мною текст:
-https://www.gutenberg.org/files/11/11-0.txt
+https://www.gutenberg.org/files/11/11-h/11-h.htm
 Это "Alice in Wonderland".
 
 Примеры генерации текста:
