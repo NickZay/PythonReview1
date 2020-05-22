@@ -1,4 +1,3 @@
-#Eveyrthing is ok
 from collections import defaultdict
 import pickle
 import string

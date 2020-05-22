@@ -2,7 +2,6 @@ import string
 
 
 def make_dict_of_signs():
-    # CHECKED
     result = dict()
     for i in range(len(TextImprover.OPEN_SIGNS)):
         result[TextImprover.OPEN_SIGNS[i]] = TextImprover.CLOSE_SIGNS[i]
@@ -11,14 +10,12 @@ def make_dict_of_signs():
 
 
 def remove_bad_signs(word):
-    # CHECKED
     word = word.replace('—', '-')
     word = word.replace("_", "")
     return word
 
 
 def make_capital(word):
-    # CHECKED
     index = 0
     for index, letter in enumerate(word):
         if letter in string.ascii_letters:
@@ -28,7 +25,6 @@ def make_capital(word):
 
 
 def end_on_bad(word):
-    # CHECKED
     bad = ["’s", "’t", "’ve", "’re", "’m", "’d"]
     is_word_bad = False
     for item in bad:
@@ -38,7 +34,6 @@ def end_on_bad(word):
 
 
 def add_one_more_point(word):
-    # CHECKED
     k = -1
     while k > -len(word) and word[k] not in string.ascii_letters:
         k -= 1
@@ -56,7 +51,6 @@ class TextImprover:
     PUNCTUATION_SIGNS = ('.', '?', '!')
 
     def __init__(self, number_of_words):
-        # CHECKED
         self.has_quote = False
         self.counter = 0
         self.num_of_words = number_of_words
@@ -68,7 +62,6 @@ class TextImprover:
         self.pairs_of_signs = make_dict_of_signs()
 
     def fflush(self, new_word, symbol=''):
-        # CHECKED
         opposite_symbol = self.pairs_of_signs[symbol]
         if symbol == '' or opposite_symbol in self.stack_of_signs:
             while self.stack_of_signs and opposite_symbol != self.stack_of_signs[-1]:
@@ -81,7 +74,6 @@ class TextImprover:
         return new_word
 
     def change_stack(self, word):
-        # ПРОЧУВСТВОВАлВСюБОЛь
         new_word = ''
         for letter in word:
             if letter in TextImprover.OPEN_SIGNS and not (letter == '"' and letter in self.stack_of_signs):
@@ -100,7 +92,6 @@ class TextImprover:
         return new_word
 
     def remove_double_dots_and_commas(self, word):
-        # CHECKED
         new_word = ''
         for i in range(len(word)):
             need_to_add = True
