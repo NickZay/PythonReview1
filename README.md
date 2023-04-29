@@ -1,3 +1,3 @@
-# PythonReview1
-Я выбрал тему "Генерация текста".
-Приступаю к выполнению
+# SimpleTextGenerator
+
+The code is in the `dev` branch. 
